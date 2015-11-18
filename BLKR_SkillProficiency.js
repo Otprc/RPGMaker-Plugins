@@ -2,17 +2,12 @@
 //=============================================================================
 /*:
  * @plugindesc Skill Proficiency
- * @author BlkRaison
- *
- * @param Method Of Exp Curve
- * @desc How the proficiency experience is calculated. 0 - for simple, 1 - for not so simple. NOTE::Using Not So Simple mode requires skill tags.
- * 		
+ * @author BlackRaison
+
  *==================TAGS==================
 	<Rank:n>
 	<MaxLevel:n>
- *
- * Default: 0
- * @default 0
+
  *
  * @param Level Up Base Requirement
  * @desc The amount of proficiency required to get the first level
@@ -24,6 +19,10 @@
  * Default: 10
  * @default 10
  *
+ * @param Unapplicable Skills
+ * @desc Skills that do not have a proficiency
+ * Default: 2 -> Attack and Guard do not have proficiency
+ * @default 2
  */
 
 
@@ -35,10 +34,9 @@
 	BlkRaison.Parameters = PluginManager.parameters('BLKR_SkillProficiency');
 	BlkRaison.Param = BlkRaison.Param || {};
 
-	BlkRaison.Param.MethodOfExpCurve = Number(BlkRaison.Parameters['Method Of Exp Curve']);
 	BlkRaison.Param.LevelUpBaseRequirement = Number(BlkRaison.Parameters['Level Up Base Requirement']);
 	BlkRaison.Param.PercentageIncreasePerLevel = Number(BlkRaison.Parameters['Percentage Increase Per Level']);
-
+	BlkRaison.Param.UnapplicableSkills = Number(BlkRaison.Parameters['Unapplicable Skills']);
 
 	_BLKR_SP_Game_Actor_initSkills = Game_Actor.prototype.initSkills;
 	Game_Actor.prototype.initSkills = function() {
@@ -171,8 +169,9 @@
 		var skill = this._action._item;
 
 		if (skill._dataClass === "skill" && curActor != null){
-			if (skill._itemId > 2){ //NOT ATTACK OR GUARD
-				//console.log(skill._itemId);
+			console.log("IS A SKILL");
+			if (skill._itemId > BlkRaison.Param.UnapplicableSkills){ //NOT ATTACK OR GUARD
+				console.log(skill._itemId);
 				if (curActor.isActor()){
 					curActor.updateSkillProficiency(skill._itemId);	
 				}
@@ -212,7 +211,6 @@
 		return 1;
 	};
 
-	//Let's create the method that draw the ATB gauge:
     Window_SkillList.prototype.drawSkillProficiency = function(actor, skillId, x, y, width) {
         var color1 = "#eeee00";
         var color2 = "#ffff00";
