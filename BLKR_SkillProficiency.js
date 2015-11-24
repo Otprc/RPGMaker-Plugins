@@ -46,7 +46,6 @@
 		this._skills.forEach(function(skill){
 			this._skillsProficiency.push(0);
 			this._skillsLevel.push(0);
-			//console.log(this._name + " push");
 		},this);
 	};
 
@@ -74,8 +73,6 @@
 			}
 
 			if (max > this._skillsLevel[i]){
-				console.log(this._skillsLevel[i]);
-				console.log(max);
 				exp = _BLKR_ProficiencyCurve(rank, this._skillsLevel[i], exp);	
 				if (exp === -1){ //Level up
 					this._skillsProficiency[i] = 0;
@@ -154,7 +151,6 @@
 		if (exp >= requiredAmount){
 			exp = -1;
 		}
-		console.log(exp);
 		return exp;
 
 	};
@@ -163,15 +159,12 @@
 	_BLKR_SP_BattleManager_endAction = BattleManager.endAction;
 	BattleManager.endAction = function() {
 		_BLKR_SP_BattleManager_endAction.call(this);
-			//console.log(this._action);	
 			
 		var curActor = this._subject;
 		var skill = this._action._item;
 
 		if (skill._dataClass === "skill" && curActor != null){
-			console.log("IS A SKILL");
 			if (skill._itemId > BlkRaison.Param.UnapplicableSkills){ //NOT ATTACK OR GUARD
-				console.log(skill._itemId);
 				if (curActor.isActor()){
 					curActor.updateSkillProficiency(skill._itemId);	
 				}
@@ -194,7 +187,6 @@
 	        var a = this.subject();
 	        var b = target;
 	        var plevel = a._skillsLevel[a.skills().indexOf(item)] + 1;
-	        //console.log(plevel);
 	        var v = $gameVariables._data;
 	        var sign = ([3, 4].contains(item.damage.type) ? -1 : 1);
 	        return Math.max(eval(item.damage.formula), 0) * sign;
