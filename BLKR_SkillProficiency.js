@@ -186,7 +186,9 @@
 	        var item = this.item();
 	        var a = this.subject();
 	        var b = target;
-	        var plevel = a._skillsLevel[a.skills().indexOf(item)] + 1;
+	        if (a.isActor()){
+	       		var plevel = a._skillsLevel[a.skills().indexOf(item)] + 1;
+	        }
 	        var v = $gameVariables._data;
 	        var sign = ([3, 4].contains(item.damage.type) ? -1 : 1);
 	        return Math.max(eval(item.damage.formula), 0) * sign;
