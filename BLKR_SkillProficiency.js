@@ -240,15 +240,12 @@
 	    	var members = $gameParty.allMembers();
 	    	var actor;
 	    	for (var i = 0; i < members.length; i++){
-	    		console.log(members[i]._actorId);
 	    		if (members[i]._actorId === actorId){
 	    			actor = members[i];
 	    			break;
 	    		}
 	    	}
-	    	console.log(actor._skills.indexOf(skillId));
 	    	var index = actor._skills.indexOf(skillId);
-	    	console.log(actor._skillsLevel[index]);
 	    	var max = parseInt($dataSkills[skillId].meta.MaxLevel);
 	    	actor._skillsLevel[index] = Math.min(skillLevel,max);
 
