@@ -102,7 +102,6 @@
 	        this._skillsProficiency.splice(index, 1);
 	        this._skillsLevel.splice(index, 1);
 	    }
-
 	    _BLKR_SP_GAME_ACTOR_forgetSkill.call(this,skillId);
 	};
 
@@ -228,6 +227,34 @@
 	        this.changePaintOpacity(1);
     	};
 	};
+
+	//PLUGIN COMMANDS
+	_BLKR_SP_Game_Interpreter_pluginCommand = Game_Interpreter.prototype.pluginCommand;
+	Game_Interpreter.prototype.pluginCommand = function(command, args) {
+	    // to be overridden by plugins
+	    if (command === 'SkillProficiencySetLevel'){ // args[0] = actor ID // args[1] = skillID // args[2] = level
+	    	var actorId = parseInt(args[0]);
+	    	var skillId = parseInt(args[1]);
+	    	var skillLevel = parseInt(args[2]);
+
+	    	var members = $gameParty.allMembers();
+	    	var actor;
+	    	for (var i = 0; i < members.length; i++){
+	    		console.log(members[i]._actorId);
+	    		if (members[i]._actorId === actorId){
+	    			actor = members[i];
+	    			break;
+	    		}
+	    	}
+	    	console.log(actor._skills.indexOf(skillId));
+	    	var index = actor._skills.indexOf(skillId);
+	    	console.log(actor._skillsLevel[index]);
+	    	var max = parseInt($dataSkills[skillId].meta.MaxLevel);
+	    	actor._skillsLevel[index] = Math.min(skillLevel,max);
+
+	    }	
+	};
+
 
 
 })();
