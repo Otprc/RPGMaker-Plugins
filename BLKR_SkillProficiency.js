@@ -231,7 +231,7 @@
 	//PLUGIN COMMANDS
 	_BLKR_SP_Game_Interpreter_pluginCommand = Game_Interpreter.prototype.pluginCommand;
 	Game_Interpreter.prototype.pluginCommand = function(command, args) {
-	    // to be overridden by plugins
+	    _BLKR_SP_Game_Interpreter_pluginCommand.call(this);
 	    if (command === 'SkillProficiencySetLevel'){ // args[0] = actor ID // args[1] = skillID // args[2] = level
 	    	var actorId = parseInt(args[0]);
 	    	var skillId = parseInt(args[1]);
